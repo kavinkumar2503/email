@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Email Spam Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <button class="toggle-dark" onclick="toggleDarkMode()" title="Toggle dark mode">
+        <span id="darkIcon">🌙</span>
+    </button>
+    <div class="container">
+        <div class="header">
+            <div class="logo-title">
+                <svg class="logo" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Z" stroke="#2193b0" stroke-width="1.5"/>
+                    <path d="M3 6l9 7 9-7" stroke="#6dd5ed" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <h2>Email Spam Checker</h2>
+            </div>
+            <div class="header-actions">
+                <label class="switch" title="Live analysis">
+                    <input type="checkbox" id="liveToggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span class="switch-label">Live</span>
+                <label class="switch" title="Use server model (if running)">
+                    <input type="checkbox" id="serverToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="switch-label">Server</span>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div class="tool-left">
+                <button class="btn" id="analyzeBtn" title="Analyze (Ctrl+Enter)">Analyze</button>
+                <button class="btn ghost" id="clearBtn" title="Clear">Clear</button>
+                <button class="btn ghost" id="pasteBtn" title="Paste from clipboard">Paste</button>
+                <button class="btn ghost" id="copyBtn" title="Copy text">Copy</button>
+            </div>
+            <div class="tool-right">
+                <select id="langSelect" class="select" title="Language for speech">
+                    <option value="en">English</option>
+                    <option value="ta">Tamil</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                </select>
+                <button class="btn xs ghost" id="speakBtn">Speak</button>
+                <button class="btn xs ghost" id="stopSpeakBtn">Stop</button>
+            </div>
+        </div>
+
+        <textarea id="emailText" rows="8" placeholder="Paste your email text here…"></textarea>
+        <div class="controls">
+            <div class="slider-wrap" title="Sensitivity">
+                <label for="sensitivity">Sensitivity</label>
+                <input id="sensitivity" type="range" min="0" max="100" value="50">
+            </div>
+            <div class="stats">
+                <span id="wordCount">0 words</span>
+                <span id="matchCount">0 matches</span>
+            </div>
+        </div>
+
+        <div class="meter">
+            <div class="meter-bar" id="riskBar" style="width: 5%"></div>
+            <div class="meter-labels">
+                <span id="riskLabel">Risk: Very Low</span>
+                <span id="confidenceLabel">Confidence: 5%</span>
+            </div>
+        </div>
+
+        <div class="result-grid">
+            <div class="panel">
+                <h3>Result</h3>
+                <div class="result" id="result"><div>Result: <strong>Not Spam</strong></div><div>Confidence: <strong>5%</strong></div><div>No spam keywords detected.</div></div>
+                <div class="spinner" id="spinner"></div>
+            </div>
+            <div class="panel">
+                <h3>Details</h3>
+                <ul id="keywordList" class="chips"></ul>
+                <div id="tips" class="tips"></div>
+            </div>
+        </div>
+
+        <div class="panel" id="replyPanel" style="display:none">
+            <div class="panel-header">
+                <h3>Reply ideas</h3>
+                <div class="panel-actions">
+                    <button class="btn xs ghost" id="copyFirstReplyBtn">Copy first</button>
+                </div>
+            </div>
+            <ul id="replyIdeas" class="replies"></ul>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>History</h3>
+                <div class="panel-actions">
+                    <button class="btn xs ghost" id="exportJsonBtn">Export JSON</button>
+                    <button class="btn xs ghost" id="exportCsvBtn">Export CSV</button>
+                    <button class="btn xs ghost" id="exportPdfBtn">Export PDF</button>
+                    <button class="btn xs danger" id="clearHistoryBtn">Clear</button>
+                </div>
+            </div>
+            <ul id="history" class="history"></ul>
+        </div>
+
+        <div class="footer">Powered by Static JavaScript &amp; CSS · Optional Flask backend</div>
+    </div>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Keyboard shortcut: Ctrl/Cmd+Enter
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                document.getElementById('analyzeBtn').click();
+            }
+        });
+    </script>
+    </body>
+    </html>
